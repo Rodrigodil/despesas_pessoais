@@ -1,0 +1,2 @@
+C:/Users/Rodrigo-TI/Desktop/Flutter/despesas_pessoais/android/app/.cxx/Debug/6x6m2g29/arm64-v8a/CMakeFiles/edit_cache.dir
+C:/Users/Rodrigo-TI/Desktop/Flutter/despesas_pessoais/android/app/.cxx/Debug/6x6m2g29/arm64-v8a/CMakeFiles/rebuild_cache.dir
