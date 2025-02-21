@@ -19,6 +19,21 @@ class ExpensesApp extends StatelessWidget {
           primary: Colors.green,
           secondary: Colors.amber,
         ),
+        textTheme: tema.textTheme.copyWith(
+          titleLarge: const TextStyle(
+            fontFamily: 'Quicksand',
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
+        appBarTheme: const AppBarTheme(
+          titleTextStyle: TextStyle(
+            fontFamily: 'Quicksand',
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     );
   }
@@ -33,19 +48,20 @@ class MyHomePage extends StatefulWidget {
 
 // Classe para criar a tela principal
 class _MyHomePageState extends State<MyHomePage> {
-  final _transactions = [
-    Transaction(
-      id: 't1',
-      title: 'Presente pra Lutcha',
-      value: 310.76,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: 't2',
-      title: 'Conta do Iate',
-      value: 211.32,
-      date: DateTime.now(),
-    ),
+  final List<Transaction> _transactions = [
+  // final _transactions = [
+    // Transaction(
+    //   id: 't1',
+    //   title: 'Presente pra Lutcha',
+    //   value: 310.76,
+    //   date: DateTime.now(),
+    // ),
+    // Transaction(
+    //   id: 't2',
+    //   title: 'Conta do Iate',
+    //   value: 211.32,
+    //   date: DateTime.now(),
+    // ),
   ];
 
   // Função para adicionar transação

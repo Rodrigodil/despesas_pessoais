@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
-  TransactionList(this.transactions);
+  const TransactionList(this.transactions, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +13,17 @@ class TransactionList extends StatelessWidget {
     //Coluna do valor e descrição
     return SizedBox(
       height: 300,
-      child: ListView.builder(
+      child: transactions.isEmpty ? Column(
+        children: [
+          Text(
+            'Nenhuma transação cadastrada!',
+            style: Theme.of(context).textTheme.titleLarge,
+            ),
+
+
+            
+        ],
+      ) : ListView.builder(
         itemCount: transactions.length,
         itemBuilder: (context, index) {
           final tr = transactions[index];
