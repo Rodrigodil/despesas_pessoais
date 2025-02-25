@@ -1,3 +1,4 @@
+import 'package:despesas_pessoais/components/chart.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'components/transaction_form.dart';
@@ -49,20 +50,27 @@ class MyHomePage extends StatefulWidget {
 // Classe para criar a tela principal
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _transactions = [
-  // final _transactions = [
-    // Transaction(
-    //   id: 't1',
-    //   title: 'Presente pra Lutcha',
-    //   value: 310.76,
-    //   date: DateTime.now(),
-    // ),
-    // Transaction(
-    //   id: 't2',
-    //   title: 'Conta do Iate',
-    //   value: 211.32,
-    //   date: DateTime.now(),
-    // ),
+   
+    Transaction(
+      id: 't1',
+      title: 'Presente pra Lutcha',
+      value: 310.76,
+      date: DateTime.now().subtract(Duration(days: 4)),
+    ),
+    Transaction(
+      id: 't2',
+      title: 'Conta do Iate',
+      value: 211.32,
+      date: DateTime.now().subtract(Duration(days: 3)),
+    ),
   ];
+
+  List<Transaction> get _recentTransactions {
+    return _transactions.where((tr) {
+      return tr.date.isAfter(DateTime.now().subtract(
+        Duration(days: 7)));
+    }).toList();
+  }
 
   // Função para adicionar transação
   _addTransaction(String title, double value) {
@@ -113,13 +121,14 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // Gráfico
-            SizedBox(
-              child: Card(
-                color: Colors.green,
-                elevation: 5,
-                child: Text('Gráfico'),
-              ),
-            ),
+            Chart(_recentTransactions),
+            // SizedBox(
+            //   child: Card(
+            //     color: Colors.green,
+            //     elevation: 5,
+            //     child: Text('Gráfico'),
+            //   ),
+            // ),
             TransactionList(_transactions),
           ],
         ),
