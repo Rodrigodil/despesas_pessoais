@@ -4,13 +4,15 @@ import 'package:intl/intl.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
-  const TransactionList(this.transactions, {super.key});
+  final void Function(String) onRemove;
+
+  TransactionList(this.transactions, this.onRemove);
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     // Lista de transações
-    //Coluna do valor e descrição
+    //Coluna das transações
     return SizedBox(
       height: 300,
       child: transactions.isEmpty ? Column(
@@ -23,58 +25,45 @@ class TransactionList extends StatelessWidget {
 
             
         ],
+        
       ) : ListView.builder(
         itemCount: transactions.length,
         itemBuilder: (context, index) {
-          final tr = transactions[index];
-          return Card(
-            child: Row(
-              children: [
-                Container(
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 15,
-                    vertical: 10,
-                  ),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      // color: Colors.green.shade600,
-                      color: Theme.of(context).colorScheme.primary,
-                      width: 2,
-                    ),
-                  ),
-                  padding: const EdgeInsets.all(10),
-                  child: Text(
-                    'R\$ ${tr.value.toString()}', // Interpolação de string
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                      // color: Colors.green,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
+          final tr = transactions[index];//transação
+          return Card(//Cartão
+            elevation: 2,
+            margin: EdgeInsets.symmetric(
+              vertical: 5,
+              horizontal: 5,
+            ),
+            //Linha com o avatar, descrição e data
+            child: ListTile(
+            leading: CircleAvatar( //Avatar
+              backgroundColor: Colors.green,
+              foregroundColor: Colors.white,
+              radius: 30,
+              child: Padding(
+                padding: const EdgeInsets.all(6),
+                child: FittedBox(//Ajusta o texto
+                  child: Text('R\$${tr.value}'),//Valor da transação
                 ),
-                // Coluna de produtos
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      tr.title,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      DateFormat('d/M/y').format(tr.date),
-                      style: TextStyle(
-                        color: const Color.fromARGB(255, 116, 115, 115),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+              ),
+            ),
+            title: Text(
+              tr.title,//Descrição da transação
+              style: Theme.of(context).textTheme.titleLarge,//Estilo do texto
+            ),
+            subtitle: Text(
+              DateFormat('d MMM y').format(tr.date),
+              ),
+              trailing: IconButton(
+                icon: Icon(Icons.delete),
+                color: Theme.of(context).colorScheme.error,
+                onPressed: () => onRemove(tr.id),
+              ),
             ),
           );
+          
         },
       ),
     );

@@ -17,15 +17,17 @@ class ExpensesApp extends StatelessWidget {
       home: const MyHomePage(),
       theme: tema.copyWith(
         colorScheme: tema.colorScheme.copyWith(
+          //Esquema de cores do tema
           primary: Colors.green,
-          secondary: Colors.amber,
+          secondary: const Color.fromARGB(255, 7, 123, 255),
         ),
         textTheme: tema.textTheme.copyWith(
+          //Estilo do texto do tema
           titleLarge: const TextStyle(
             fontFamily: 'Quicksand',
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: Colors.black,
+            color: Color.fromARGB(255, 51, 50, 50),
           ),
         ),
         appBarTheme: const AppBarTheme(
@@ -49,36 +51,22 @@ class MyHomePage extends StatefulWidget {
 
 // Classe para criar a tela principal
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Transaction> _transactions = [
-   
-    Transaction(
-      id: 't1',
-      title: 'Presente pra Lutcha',
-      value: 310.76,
-      date: DateTime.now().subtract(Duration(days: 4)),
-    ),
-    Transaction(
-      id: 't2',
-      title: 'Conta do Iate',
-      value: 211.32,
-      date: DateTime.now().subtract(Duration(days: 3)),
-    ),
-  ];
+  //Lista de transações
+  final List<Transaction> _transactions = [];
 
   List<Transaction> get _recentTransactions {
     return _transactions.where((tr) {
-      return tr.date.isAfter(DateTime.now().subtract(
-        Duration(days: 7)));
+      return tr.date.isAfter(DateTime.now().subtract(Duration(days: 7)));
     }).toList();
   }
 
   // Função para adicionar transação
-  _addTransaction(String title, double value) {
+  _addTransaction(String title, double value, DateTime date) {
     final newTransaction = Transaction(
       id: Random().nextDouble().toString(),
       title: title,
       value: value,
-      date: DateTime.now(),
+      date: date,
     );
 
     setState(() {
@@ -87,6 +75,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
     // Fechar o modal
     Navigator.of(context).pop();
+  }
+  // Função para remover transação
+  _removeTransaction(String id) {
+    setState(() {
+      _transactions.removeWhere((tr) => tr.id == id);
+    });
   }
 
   // Função para abrir o modal
@@ -106,13 +100,25 @@ class _MyHomePageState extends State<MyHomePage> {
       // Barra superior
       appBar: AppBar(
         backgroundColor: Colors.green,
-        title: const Text('Despesas Pessoais'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.add_circle),
-            onPressed: () => _openTransactionFormModal(context),
+        title: const Center(
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.monetization_on,
+                color: Colors.white,
+              ),
+              SizedBox(width: 5),
+              Text('Despesas Pessoais'),
+            ],
           ),
-        ],
+        ),
+        // actions: [
+        //   IconButton(
+        // onPressed: () => _openTransactionFormModal(context),
+        // icon: Icon(Icons.add_circle),
+        //   ),
+        // ],
       ),
       // Corpo da tela
       body: SingleChildScrollView(
@@ -129,7 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
             //     child: Text('Gráfico'),
             //   ),
             // ),
-            TransactionList(_transactions),
+            TransactionList(_transactions, _removeTransaction),
           ],
         ),
       ),
@@ -140,7 +146,7 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: () => _openTransactionFormModal(context),
         child: Icon(Icons.add),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }

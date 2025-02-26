@@ -8,7 +8,7 @@ class Chart extends StatelessWidget {
 
   const Chart(this.recentTransaction, {super.key});
 
-  List<Map<String, Object>> get groupedTransactions {
+  List<Map<String, Object>> get groupedTransactions {//Agrupamento das transações
     return List.generate(7, (index) {
       final weekDay = DateTime.now().subtract(
         Duration(days: index),
@@ -26,11 +26,38 @@ class Chart extends StatelessWidget {
         }
       }
 
+      String dayOfWeek;//Dia da semana
+      switch (weekDay.weekday) {
+        case 1:
+          dayOfWeek = 'seg';
+          break;
+        case 2:
+          dayOfWeek = 'ter';
+          break;
+        case 3:
+          dayOfWeek = 'qua';
+          break;
+        case 4:
+          dayOfWeek = 'qui';
+          break;
+        case 5:
+          dayOfWeek = 'sex';
+          break;
+        case 6:
+          dayOfWeek = 'sab';
+          break;
+        case 7:
+          dayOfWeek = 'dom';
+          break;
+        default:
+          dayOfWeek = '';
+      }
+
       return {
-        'day': DateFormat.E().format(weekDay)[0],
+        'day': dayOfWeek,
         'value': totalSum,
       };
-    });
+    }).reversed.toList(); //Inversão da lista
   }
 
   double get _weekTotalValue {
@@ -40,13 +67,13 @@ class Chart extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {//Construção do gráfico
     groupedTransactions;
-    return Card(
-      elevation: 6,
-      margin: const EdgeInsets.all(20),
+    return Card(//Cartão
+      elevation: 2,
+      margin: const EdgeInsets.all(5),//Margem
       child: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),//Preenchimento
         child: Row(//Linha do gráfico
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: groupedTransactions.map((tr) {
@@ -55,7 +82,8 @@ class Chart extends StatelessWidget {
               child: ChartBar(
                 tr['day'] as String,
                 tr['value'] as double,
-                (tr['value'] as double) / _weekTotalValue,
+                _weekTotalValue == 0 ? 0 : (tr['value'] as double) / _weekTotalValue, requiredPercentage: 0,
+                
               ),
             );
           }).toList(),
