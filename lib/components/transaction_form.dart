@@ -1,10 +1,12 @@
+import 'package:despesas_pessoais/models/transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class TransactionForm extends StatefulWidget {
   final void Function(String, double, DateTime) onSubmit;
+  final Transaction? transaction;
 
-  const TransactionForm(this.onSubmit, {super.key});
+  const TransactionForm(this.onSubmit, {super.key, this.transaction});
 
   @override
   State<TransactionForm> createState() => _TransactionFormState();
@@ -15,6 +17,18 @@ class _TransactionFormState extends State<TransactionForm> {
   final _valueController = TextEditingController();
   DateTime? _selectedDate = DateTime.now();
 
+  @override
+  void initState() {
+    super.initState();
+    if (widget.transaction != null) {
+      _titleController.text = widget.transaction!.title;
+      _valueController.text = widget.transaction!.value.toString();
+      _selectedDate = widget.transaction!.date;
+    } else {
+      _selectedDate = DateTime.now();
+    }
+  }
+
   _submitForm() {
     final title = _titleController.text;
     final value = double.tryParse(_valueController.text) ?? 0;
@@ -23,11 +37,12 @@ class _TransactionFormState extends State<TransactionForm> {
       return;
     }
 
-  widget.onSubmit(title, value, _selectedDate!);
-  
+    widget.onSubmit(title, value, _selectedDate!);
+    
   }
 
-//Função para mostrar o calendário
+
+//Função para pegar a data atual e mostrar o calendário
   _showDatePicker() {
     showDatePicker(
       context: context,
@@ -69,7 +84,7 @@ class _TransactionFormState extends State<TransactionForm> {
                 labelText: 'Valor (R\$)',
               ),
             ),
-            //Função para mostrar o calendário
+            // Botão de seleção de data
             SizedBox(
               height: 70,
               child: Row(

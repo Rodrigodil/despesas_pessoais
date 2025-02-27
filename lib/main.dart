@@ -43,7 +43,7 @@ class ExpensesApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -78,6 +78,22 @@ class _MyHomePageState extends State<MyHomePage> {
     // Fechar o modal
     Navigator.of(context).pop();
   }
+
+// Função para editar transação
+_editTransaction(String id, String title, double value, DateTime date) {
+  final transactionIndex = _transactions.indexWhere((tr) => tr.id == id);
+  if (transactionIndex >= 0) {
+    setState(() {
+      _transactions[transactionIndex] = Transaction(
+        id: id,
+        title: title,
+        value: value,
+        date: date,
+      );
+    });
+  }
+}
+
   // Função para remover transação
   _removeTransaction(String id) {
     setState(() {
@@ -86,14 +102,17 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   // Função para abrir o modal
-  _openTransactionFormModal(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (_) {
-        return TransactionForm(_addTransaction);
-      },
-    );
-  }
+  _openTransactionFormModal(BuildContext context, [Transaction? transaction]) {
+  showModalBottomSheet(
+    context: context,
+    builder: (_) {
+      return TransactionForm(
+        transaction != null ? (title, value, date) => _editTransaction(transaction.id, title, value, date) : _addTransaction,
+        transaction: transaction,
+      );
+    },
+  );
+}
 
   @override
   // Método para criar a tela principal
@@ -137,7 +156,7 @@ class _MyHomePageState extends State<MyHomePage> {
             //     child: Text('Gráfico'),
             //   ),
             // ),
-            TransactionList(_transactions, _removeTransaction),
+            TransactionList(_transactions, _removeTransaction, (tr) => _openTransactionFormModal(context, tr)),
           ],
         ),
       ),

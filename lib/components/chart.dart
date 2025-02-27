@@ -7,8 +7,8 @@ class Chart extends StatelessWidget {
 
   const Chart(this.recentTransaction, {super.key});
   
-
-  List<Map<String, Object>> get groupedTransactions {//Agrupamento das transações
+  //Agrupamento das transações
+  List<Map<String, Object>> get groupedTransactions {
     return List.generate(7, (index) {
       final weekDay = DateTime.now().subtract(
         Duration(days: index),
@@ -25,8 +25,8 @@ class Chart extends StatelessWidget {
           totalSum += recentTransaction[i].value;
         }
       }
-
-      String dayOfWeek;//Dia da semana
+      //Dias da semana
+      String dayOfWeek;
       switch (weekDay.weekday) {
         case 1:
           dayOfWeek = 'seg';
