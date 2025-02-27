@@ -24,7 +24,7 @@ class _TransactionFormState extends State<TransactionForm> {
     }
 
   widget.onSubmit(title, value, _selectedDate!);
-  Navigator.of(context).pop();
+  
   }
 
 //Função para mostrar o calendário

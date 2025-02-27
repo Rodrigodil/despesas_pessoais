@@ -6,7 +6,7 @@ class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
   final void Function(String) onRemove;
 
-  TransactionList(this.transactions, this.onRemove);
+  const TransactionList(this.transactions, this.onRemove, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,9 +14,11 @@ class TransactionList extends StatelessWidget {
     // Lista de transações
     //Coluna das transações
     return SizedBox(
-      height: 300,
-      child: transactions.isEmpty ? Column(
+      height: 600,
+      child: transactions.isEmpty 
+      ? Column(
         children: [
+          
           Text(
             'Nenhuma transação cadastrada!',
             style: Theme.of(context).textTheme.titleLarge,
@@ -32,7 +34,7 @@ class TransactionList extends StatelessWidget {
           final tr = transactions[index];//transação
           return Card(//Cartão
             elevation: 2,
-            margin: EdgeInsets.symmetric(
+            margin: const EdgeInsets.symmetric(
               vertical: 5,
               horizontal: 5,
             ),
@@ -57,7 +59,7 @@ class TransactionList extends StatelessWidget {
               DateFormat('d MMM y').format(tr.date),
               ),
               trailing: IconButton(
-                icon: Icon(Icons.delete),
+                icon: const Icon(Icons.delete),
                 color: Theme.of(context).colorScheme.error,
                 onPressed: () => onRemove(tr.id),
               ),
