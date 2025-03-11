@@ -133,13 +133,7 @@ _editTransaction(String id, String title, double value, DateTime date) {
               Text('Despesas Pessoais'),
             ],
           ),
-        ),
-        // actions: [
-        //   IconButton(
-        // onPressed: () => _openTransactionFormModal(context),
-        // icon: Icon(Icons.add_circle),
-        //   ),
-        // ],
+        ),        
       ),
       // Corpo da tela
       body: SingleChildScrollView(
@@ -148,14 +142,7 @@ _editTransaction(String id, String title, double value, DateTime date) {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // Gráfico
-            Chart(_recentTransactions),
-            // SizedBox(
-            //   child: Card(
-            //     color: Colors.green,
-            //     elevation: 5,
-            //     child: Text('Gráfico'),
-            //   ),
-            // ),
+            Chart(_recentTransactions),            
             TransactionList(_transactions, _removeTransaction, (tr) => _openTransactionFormModal(context, tr)),
           ],
         ),
